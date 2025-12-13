@@ -71,7 +71,7 @@ for g in range(2, 6):
     print('Searching '+str(g)+'G collisions...')
     time.sleep(3)
     fullstring = ''
-    for x in range(1, 10001):
+    for x in range(1, 3001):
         if x%1000 == 0:
             print(str(x)+' out of 10000...')
         processsynth(makesynth(seed + str(x), g))
@@ -128,4 +128,7 @@ for x in apgcodes:
 f = open('syntheses.txt', 'a')
 f.write(fullstring)
 f.close()       
-    
+print('Search complete.')
+print('Results saved to syntheses.txt.')
+print('Use syncmd.py to commit them to the database.')
+
