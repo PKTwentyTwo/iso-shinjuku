@@ -1,7 +1,7 @@
 #This is the CLI for the project.
 #It includes a set of commands that enable easy compilation and management of rules and syntheses.
 #Standard library modules:
-import os, platform, math, time
+import os, platform, math, time, sys
 #Project modules:
 
 #Try and import lifelib. If it fails, prompt the user to install it.
@@ -88,6 +88,6 @@ def autoinstall(args):
         print('Quitting...')
         time.sleep(10)
         quit()
-    
-loadrule(['b3s23'])
+
+loadrule(['b3s238'])
 synthdata.processfile('syntheses.txt')
