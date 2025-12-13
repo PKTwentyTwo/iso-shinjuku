@@ -1,0 +1,6 @@
+Help on command 'quit':
+Quits the current terminal session.
+Requires no arguments.
+
+Example usage:
+quit           Quits the current terminal session.

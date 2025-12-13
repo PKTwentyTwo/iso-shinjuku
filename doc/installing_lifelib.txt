@@ -1,0 +1,23 @@
+This database system requires the Python module lifelib for a lot of its operations.
+This document provides information about how to install it.
+--What is lifelib?--
+lifelib is a set of tools for manipulation of patterns in cellular automata, which can be used with either C++ or Python.
+It can be found here: https://gitlab.com/apgoucher/lifelib
+
+--Installing with pip--
+If you have access to pip, installing lifelib is easy.
+Open a terminal and run:
+pip install python-lifelib
+
+This should install it if your environment supports pip and PATH.
+
+---Windows installation---
+If you are using Python on Windows (which is not recommended; to take advantage of git, you should use WSL), Cygwin must be installed as well.
+You should do this in Python by importing lifelib and running lifelib.install_cygwin(). The installation should be automatic from there.
+
+--Installing with git--
+In some environments, such as WSL, pip might not work correctly. 
+You can instead install it with git if your terminal supports it.
+Use the following command in this project's repository:
+git clone https://gitlab.com/apgoucher/lifelib.git
+

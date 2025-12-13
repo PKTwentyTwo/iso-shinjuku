@@ -1,0 +1,13 @@
+This project has three major requirements:
+-Python 3 (version 3.10.0 or later is required due to the use of match).
+The latest versions avaliable at the time of writing are 3.14.2 on Windows and 3.12.3 on Linux,
+but running on Linux, WSL, or another bash environment is recommended as opposed to, say, VS code.
+
+-Git
+The project is designed to be forked, so that people can set up their own databases.
+This largely depends on the use of git as a distributed version control system.
+Make sure you have it installed in your bash or bash-like environment.
+
+-Lifelib
+The only module used that is not part of the standard library is lifelib.
+See installing_lifelib.txt for instructions on how to install lifelib.

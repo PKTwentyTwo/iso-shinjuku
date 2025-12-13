@@ -1,0 +1,6 @@
+Help on command 'exit':
+Quits the current terminal session.
+Requires no arguments.
+
+Example usage:
+exit           Quits the current terminal session.

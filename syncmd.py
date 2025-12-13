@@ -12,6 +12,7 @@ except ImportError:
     print('Lifelib is not installed. Try installing it with \'autoinstall\'.')
     lifelib_installed = False
 rule = ''
+running = True
 def verifyargs(args, lengths):
     if len(args) not in lengths:
         return False
@@ -113,6 +114,66 @@ def parsecommand(command):
         parsed.append(currentarg)
 
     return parsed
+def exitshell(args):
+    global running
+    print('Terminating...')
+    running = False
+def printlicense(args):
+    if os.path.exists(os.getcwd() + '/LICENSE'):
+        f = open('LICENSE', 'r')
+        print(f.read())
+        f.close()
+    else:
+        print('Could not find license file, defaulting to MIT:')
+        print('''MIT License
+
+Copyright (c) 2025 PK22
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''')
+def providehelp(args):
+    if not verifyargs(args, [0,1]):
+        print('Usage: \'help <command>\' or \'help\'')
+        return ''
+    docfolder = os.getcwd() + '/doc/cmd/'
+    if not os.path.exists(docfolder):
+        print('Error: could not find documentation folder!')
+        return ''
+    if len(args) == 0:   
+        print('Avaliable commands:') 
+        helpstring = ''
+        files = os.listdir(docfolder)
+        files.sort()
+        for x in files:
+            f = open(docfolder + x, 'r')
+            lines = f.read().split('\n')
+            f.close()
+            if len(lines) > 1:
+                helpstring = helpstring + x + ' ' * (16 - len(x)) + lines[1] + '\n'
+        print(helpstring)
+    else:
+        command = args[1]
+        if os.path.exists(docfolder + command):
+            f = open(docfolder + command, 'r')
+            print(f.read())
+            f.close()
+        else:
+            print('Could not find command '+command+'. Type \'help\' for a list of commands.')
 def executecommand(arguments):
     if len(arguments) > 0:
         command = arguments[0]
@@ -129,9 +190,24 @@ def executecommand(arguments):
         case 'synth':
             makesynthesis(args)
             return ''
+        case 'help':
+            providehelp(args)
+            return ''
+        case 'quit':
+            exitshell(args)
+            return ''
+        case 'exit':
+            exitshell(args)
+            return ''
+        case 'license':
+            printlicense(args)
+            return ''
     print('Command \''+command+'\' not found.\nType \'help\' for a list of commands.')
-        
-while True:
+    return ''
+
+print('This is the CLI for iso-shinjuku.')
+print('Type \'help\' or \'license\' for more information.')
+while running:
     command = input('>')
     parsedcommand = parsecommand(command)
     executecommand(parsedcommand)

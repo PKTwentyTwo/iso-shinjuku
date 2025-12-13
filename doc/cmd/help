@@ -1,0 +1,7 @@
+Help on command 'help':
+Prints a list of commands, or info about a command.
+Takes one optional argument: <command>
+
+Example usage:
+help          Prints a list of commands.
+help synth    Prints info about command 'synth'.
