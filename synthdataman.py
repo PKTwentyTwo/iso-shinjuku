@@ -233,7 +233,7 @@ def addsynth(pt):
             tabulations[tabulation].append(record)
         else:
             print('New synthesis is no cheaper than current synthesis.')
-    #pushsynths(tabulation)
+    pushsynths(tabulation)
 def pushsynths(tabulation):
     #Uploads the fresh data to a csv file.
     text = 'input,rle,cost,output\n'
@@ -340,6 +340,5 @@ def processfile(file):
         if rle[0] not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'o', 'b', '$', '!']:
             continue
         addsynth(lt.pattern(rle))
-    for x in tabulations:
-        pushsynths(x)
+
 
