@@ -135,7 +135,7 @@ def providehelp(args):
                 helpstring = helpstring + x + ' ' * (16 - len(x)) + lines[1] + '\n'
         print(helpstring)
     else:
-        command = args[1]
+        command = args[0]
         if os.path.exists(docfolder + command):
             f = open(docfolder + command, 'r')
             print(f.read())

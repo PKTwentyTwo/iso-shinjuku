@@ -160,10 +160,6 @@ def rewind(pt, amount):
 def isvalid(pt):
     #Determines if a synthesis is valid or not.
     gliders = getgliderset(pt)
-    print(rewind(gliders, 1000)[1000].firstcell)
-    print(gliders.firstcell)
-    print(gliders.rle_string())
-    print(rewind(gliders, 1000)[1000].rle_string())
     return rewind(gliders, 1000)[1000].digest() == gliders.digest()
 def advance(pt):
     #Advances a synthesis until 3 generations before the number of gliders decreases.
@@ -185,6 +181,14 @@ def advance(pt):
         else:
             gens = gens - gap
     return pt[gens - 3]
+def naivecheck(pt):
+    #To save time when checking periodicity, check if gliders are present.
+    comp = pt.components()
+    wechslers = [x.wechsler for x in comp]
+    if '153' in wechslers or '163' in wechslers:
+        return False
+    else:
+        return True        
 def addsynth(pt):
     #Adds a synthesis to the corresponding csv file.
     if not isvalid(pt):
@@ -203,6 +207,9 @@ def addsynth(pt):
         print('Initial pattern is aperiodic.')
         return None
     final_constellation = pt[4000]
+    if not naivecheck(final_constellation):
+        print('Final pattern is aperiodic.')
+        return None
     final_apgcode = getapgcode(final_constellation)
     if getapgcode(final_constellation) == 'aperiodic':
         print('Final pattern is aperiodic.')

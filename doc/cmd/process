@@ -1,0 +1,7 @@
+Help on command 'process':
+Processes synthesis components given in a file.
+Each component should be a headerless RLE with no line breaks.
+Requires one argument: <file>
+
+Example usage:
+process syntheses.txt      Processes components in syntheses.txt.
