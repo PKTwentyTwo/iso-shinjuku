@@ -3,12 +3,11 @@
 #Standard library modules:
 import os, platform, math, time, sys
 #Project modules:
-
+import synthdataman as synthdata
 #Try and import lifelib. If it fails, prompt the user to install it.
 try:
     import lifelib
     lifelib_installed = True
-    import synthdataman as synthdata
 except ImportError:
     print('Lifelib is not installed. Try installing it with \'autoinstall\'.')
     lifelib_installed = False
@@ -24,8 +23,12 @@ def loadrule(args):
     if not verifyargs(args, [1]):
         print('Usage: load <rule>')
         return ''
-    rule = args[0]
-    rule = rule.lower().replace('/', '')
+    newrule = args[0]
+    newrule = newrule
+    newrule = rule.lower().replace('/', '')
+    if newrule != rule:
+        synthdata.wipetabulations()
+    rule = newrule
     sess = lifelib.load_rules(rule)
     lt = sess.lifetree(n_layers = 1, memory = 1000)
     synthdata.lt = lt
@@ -88,6 +91,47 @@ def autoinstall(args):
         print('Quitting...')
         time.sleep(10)
         quit()
+def parsecommand(command):
+    commandlength = len(command)
+    parsed = []
+    currentarg = ''
+    inquotes = False
+    for x in range(commandlength):
+        if command[x] == '#':
+            if currentarg != '':
+                parsed.append(currentarg)
+            currentarg = ''
+            break
+        if command[x] == '\"' or command[x] == '\'':
+            inquotes = not inquotes
+        elif command[x] == ' ' and not inquotes:
+            parsed.append(currentarg)
+            currentarg = ''
+        else:
+            currentarg = currentarg + command[x]
+    if currentarg != '':
+        parsed.append(currentarg)
 
-loadrule(['b3s238'])
-synthdata.processfile('syntheses.txt')
+    return parsed
+def executecommand(arguments):
+    if len(arguments) > 0:
+        command = arguments[0]
+    else:
+        return ''
+    if len(arguments) > 1:
+        args = arguments[1:]
+    else:
+        args = []
+    match command:
+        case 'load':
+            loadrule(args)
+            return ''
+        case 'synth':
+            makesynthesis(args)
+            return ''
+    print('Command \''+command+'\' not found.\nType \'help\' for a list of commands.')
+        
+while True:
+    command = input('>')
+    parsedcommand = parsecommand(command)
+    executecommand(parsedcommand)

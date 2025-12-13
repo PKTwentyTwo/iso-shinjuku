@@ -1,0 +1,7 @@
+Help on command 'synth':
+Attempts to compile a synthesis based on known components.
+Requires one argument: <apgcode>
+A rule must be loaded first using load <rule>.
+
+Example usage:
+synth xs10_32qr       Attempts to synthesise xs10_32qr (a block on table).

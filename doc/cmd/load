@@ -1,0 +1,7 @@
+Help on command 'load':
+Loads a given isotropic rule, meaning the lifetree and synthesis manager will be using that rule.
+Requires one argument: <rule>
+
+Example usage:
+load b3s23        Loads standard Life as the rule.
+load B2n3/S23-q   Loads LeapLife as the rule. Syntax is corrected automatically.

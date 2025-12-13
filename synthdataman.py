@@ -1,8 +1,11 @@
+#This is the SYNTHesis DATA MANager, which handles interactions with the database.
+#It contains functions to assemble syntheses using Dijkstra's algorithm, as well as add components to the database.
+
 import os, lifelib, sys, csv, math, re
 import dijkstra
 
 tabulations = {}
-rule = 'b3s23'
+rule = 'b3s23' #Use standard Life as the default rule.
 def makedirstructure(rule, tabulation=None):
     #Creates a new directory/file when necessary.
     #The structure of the database is <root>/rules/<rule>/<tabulation>.csv.
@@ -17,9 +20,13 @@ def makedirstructure(rule, tabulation=None):
             f.write('input,rle,cost,output\n')
             f.close()
 
-#Function time.
+def wipetabulations():
+    #Wipes the copied tabulations.
+    #Used when loading a new rule.
+    global tabulations
+    tabulations = {}
 def loadtabulation(tabulation):
-    #Loads a tabulation into a dictionary.
+    #Loads a tabulation into a dictionary from the corresponding csv file.
     global tabulations
     makedirstructure(rule, tabulation)
     filename = os.getcwd() + '/rules/' + rule + '/' + tabulation + '.csv' 
@@ -39,6 +46,7 @@ def loadtabulation(tabulation):
     tabulations[tabulation] = rows
 def getapgcode(pt):
     #Gets the apgcode of a pattern which might not be periodic.
+    #Returns 'aperiodic' if the pattern is not determined to be periodic.
     period = pt.pdetect_or_advance()
     if type(period) == type({}):
         return pt.apgcode
@@ -117,7 +125,7 @@ def getgcount(pt):
     return gliders
 def getgliderset(pt):
     #Gets just the gliders of a pattern.
-    #Useful for determining validity.
+    #Useful for determining validity, as well as rewinding.
 
     gliders = lt.pattern('b!')
     components = pt.components()
@@ -126,7 +134,7 @@ def getgliderset(pt):
             gliders = gliders + x
     return gliders
 def grewind(pt, amount):
-    #Rewinds gliders by a given number of generations.
+    #Rewinds gliders in a pattern by a given number of generations.
     components = pt.components()
     shift = math.ceil(amount/4)
     for x in components:
@@ -139,11 +147,14 @@ def grewind(pt, amount):
             pt = pt + x
     return pt
 def rewind(pt, amount):
+    #Rewinds a pattern by a given number of generations.
+    #It differs to grewind in that it rewinds oscillators as well as still lifes.
+    #No support for spaceships yet. :(
     gliders = getgliderset(pt)
     rewound = grewind(gliders, amount)
     pt2 = pt - gliders
     apgcode = getapgcode(pt2)
-    if apgcode == 'aperiodic':
+    if apgcode == 'aperiodic' or apgcode[0:1] == 'xq':
         return None
     shift = (-amount)%pt2.period
     pt3 = pt2[shift]
@@ -218,8 +229,9 @@ def addsynth(pt):
             tabulations[tabulation].append(record)
         else:
             print('New synthesis is no cheaper than current synthesis.')
-    pushsynths(tabulation)
+    #pushsynths(tabulation)
 def pushsynths(tabulation):
+    #Uploads the fresh data to a csv file.
     text = 'input,rle,cost,output\n'
     tabdata = tabulations[tabulation]
     for x in tabdata:
@@ -230,6 +242,7 @@ def pushsynths(tabulation):
     f.write(text)
     f.close()
 def compilesynth(steps):
+    #Puts together a synthesis based on RLEs representing each step.
     synth = lt.pattern('b!')
     count = -1
     for x in steps:
@@ -269,8 +282,10 @@ def compilesynth(steps):
         synth = synth + pt(bbox[2]+bbox[0]+21, 0)
     return synth
 def striptab(apgcode):
+    #Gets the tabulation from an apgcode.
     return apgcode[0:apgcode.find('_')]
 def assemblesynth(apgcode):
+    #Uses Dijkstra's algorithm to assemble a synthesis based on components.
     tabulations = {}
     apgcodes = [apgcode]
     paths = {}
@@ -310,4 +325,6 @@ def processfile(file):
     f.close()
     for x in rles:
         addsynth(lt.pattern(x))
+    for x in tabulations:
+        pushsynths(x)
 
