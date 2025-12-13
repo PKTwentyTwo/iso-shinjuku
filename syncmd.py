@@ -9,8 +9,10 @@ try:
     import lifelib
     lifelib_installed = True
 except ImportError:
-    print('Lifelib is not installed. Try installing it with \'autoinstall\'.')
+    print('Lifelib is not installed. Look in /doc for documentation on how to install it.')
     lifelib_installed = False
+    print('Quitting in 60 seconds...')
+    quit()
 rule = ''
 running = True
 def verifyargs(args, lengths):
@@ -26,7 +28,7 @@ def loadrule(args):
         return ''
     newrule = args[0]
     newrule = newrule
-    newrule = rule.lower().replace('/', '')
+    newrule = newrule.lower().replace('/', '')
     if newrule != rule:
         synthdata.wipetabulations()
     rule = newrule
@@ -40,58 +42,10 @@ def makesynthesis(args):
         print('Usage: synth <apgcode>')
         return ''
     if rule == '':
-        print('You must specify a rule! Use \'load <rule\' to choose a rule!')
+        print('You must specify a rule! Use \'load <rule>\' to choose a rule!')
         return ''
     synthdata.assemblesynth(args[0])
-def autoinstall(args):
-    global lifelib_installed
-    if not verifyargs(args, [0]):
-        print('Usage: autoinstall')
-        return ''
-    if not lifelib_installed:
-        print('Required module lifelib is not installed.')
-        options = []
-        operatingsystem = platform.uname()[0]
-        options.append(str(len(options)+1)+'). Install with pip')
-        if operatingsystem == 'Linux' or operatingsystem.lower().count('cygwin') > 0:
-            options.append(str(len(options)+1)+'). Clone repo with git')
-        options.append(str(len(options)+1)+'). Install with command of your choice.')
-        for x in options:
-            print(x)
-        choice = input('Choose an option from the above.\n>')
-        if choice == '1':
-            os.system('pip install python-lifelib')
-        elif choice == '2':
-            if operatingsystem == 'Linux' or operatingsystem.lower().count('cygwin') > 0:
-                os.system('git clone https://gitlab.com/apgoucher/lifelib')
-            else:
-                command = input('Enter the command you wish to install lifelib with.\nBear in mind the name on PyPi is python-lifelib, not lifelib.\n>')
-                os.system(command)
-        else:
-            command = input('Enter the command you wish to install lifelib with.\nBear in mind the name on PyPi is python-lifelib, not lifelib.\n>')
-            os.system(command)
-        try:
-            import lifelib
-            lifelib_installed = True
-        except ImportError:
-            lifelib_installed = False
-        if lifelib_installed:
-            print('Success!')
-            if operatingsystem == 'Windows':
-                print('You must install Cygwin to use lifelib on Windows.')
-                choice = input('Do you want to install? (y/n)\n>')
-                if choice.lower() == 'y':
-                    lifelib.install_cygwin()
-                else:
-                    print('Quitting program...')
-                    time.sleep(10)
-                    quit()
-        else:
-            print('Failed to install lifelib.')
-        print('Please restart the program.')
-        print('Quitting...')
-        time.sleep(10)
-        quit()
+
 def parsecommand(command):
     commandlength = len(command)
     parsed = []
@@ -118,6 +72,20 @@ def exitshell(args):
     global running
     print('Terminating...')
     running = False
+def procfile(args):
+    if not verifyargs(args, [1]):
+        print('Usage: process <file>')
+        return ''
+    if rule == '':
+        print('You must specify a rule! Use \'load <rule>\' to choose a rule!')
+        return ''
+    file = args[0]
+    if os.path.isfile(os.getcwd() + '/' + file):
+        synthdata.processfile(os.getcwd() + '/' + file)
+    elif os.path.isfile(file):
+        synthdata.processfile(file)
+    else:
+        print('Error: Unable to locate file '+file)
 def printlicense(args):
     if os.path.exists(os.getcwd() + '/LICENSE'):
         f = open('LICENSE', 'r')
@@ -183,6 +151,7 @@ def executecommand(arguments):
         args = arguments[1:]
     else:
         args = []
+    command = command.lower()
     match command:
         case 'load':
             loadrule(args)
@@ -201,6 +170,9 @@ def executecommand(arguments):
             return ''
         case 'license':
             printlicense(args)
+            return ''
+        case 'process':
+            procfile(args)
             return ''
     print('Command \''+command+'\' not found.\nType \'help\' for a list of commands.')
     return ''

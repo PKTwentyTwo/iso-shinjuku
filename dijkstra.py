@@ -9,7 +9,7 @@
 ##distances = {'xs4_33':{'xs5_253':1, 'xs0_0':1, 'xs7_25ac':2}, 'xs5_253':{'xs4_33':1, 'xs0_0':2}, 'xs7_25ac':{'xs4_33':3,'xs0_0':5,'xs5_253':2}, 'xs0_0':{'xs4_33':1, 'xs5_253':1,'xs7_25ac':1}}
 ##target = 'xs0_0'
 ##startpoint = 'xs7_25ac'
-import copy
+import copy, random
 values = {}
 visited = []
 def applydistances(node, distances, paths):
@@ -46,7 +46,17 @@ in as few gliders as possible.'''
         selectednode = getclosestunvisited(nodes, visited)
         paths = applydistances(selectednode, distances, paths)
     if target not in values:
-        return ['Error']
+        if len(nodes) > 1:
+            giventargets = []
+            nodes2 = copy.deepcopy(nodes)
+            nodes2.remove(startpoint)
+            for x in range(min(20, len(nodes2))):
+                node = random.choice(nodes2)
+                nodes2.remove(node)
+                giventargets.append(node)
+            return ['Error', giventargets]
+        else:
+            return ['Error']
     if values[target] < 999999:
         path = paths[target][::-1] + [startpoint]
 

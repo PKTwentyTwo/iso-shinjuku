@@ -33,12 +33,10 @@ def loadtabulation(tabulation):
     rows = []    
     #Use a csv reader to get the data from the file.
     #(pandas might be better, but ideally lifelib should be the only non standard-library module).
-    print(filename)
     with open(filename, 'r') as csvfile:
         csvreader = csv.reader(csvfile)
         for row in csvreader:     
             rows.append(row)
-    print(len(rows))
     rows.pop(0)
     for x in rows:
         if '' in x:
@@ -205,7 +203,6 @@ def addsynth(pt):
         print('Initial pattern is aperiodic.')
         return None
     final_constellation = pt[4000]
-    print(final_constellation.rle_string())
     final_apgcode = getapgcode(final_constellation)
     if getapgcode(final_constellation) == 'aperiodic':
         print('Final pattern is aperiodic.')
@@ -307,8 +304,13 @@ def assemblesynth(apgcode):
                 paths[x][inputcode] = int(s[2])
     
     result = dijkstra.Dijkstra(apgcodes, paths, apgcode)
-    if result == ['Error']:
+    if result[0] == 'Error':
         print('Error: Unable to assemble synthesis for '+apgcode)
+        if len(result) == 2:
+            toprint = 'Try and manually find a synthesis for one of the following:\n'
+            for n in result[1]:
+                toprint = toprint + n + '\n'
+            print(toprint)
         return 'Error!'
     stages = []
     for x in range(len(result) - 1):
@@ -321,10 +323,16 @@ def assemblesynth(apgcode):
         
 def processfile(file):
     f = open(file, 'r')
-    rles = f.readlines()
+    rles = f.read().split('\n')
     f.close()
-    for x in rles:
-        addsynth(lt.pattern(x))
+    for rle in rles:
+        if len(rle) == 0:
+            continue
+        if rle[-1] != '!':
+            continue
+        if rle[0] not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'o', 'b', '$', '!']:
+            continue
+        addsynth(lt.pattern(rle))
     for x in tabulations:
         pushsynths(x)
 
