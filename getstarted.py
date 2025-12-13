@@ -64,12 +64,68 @@ def processsynth(pt):
                 print(evpt.apgcode)
                 fullstring = fullstring + striprle(pt.rle_string()) + '\n'
                 apgcodes.add(evpt.apgcode)
-for x in range(1, 10001):
-    if x%1000 == 0:
-        print(str(x)+' out of 10000...')
-    processsynth(makesynth(seed + str(x), 2))
 f = open('syntheses.txt', 'w')
-f.write(fullstring)
+f.write('')
 f.close()
-        
+for g in range(2, 6):
+    print('Searching '+str(g)+'G collisions...')
+    time.sleep(3)
+    fullstring = ''
+    for x in range(1, 10001):
+        if x%1000 == 0:
+            print(str(x)+' out of 10000...')
+        processsynth(makesynth(seed + str(x), g))
+    f = open('syntheses.txt', 'a')
+    f.write(fullstring)
+    f.close()
+print('Search 1 complete!')
+time.sleep(5)
+def getcanon(pattern):
+    digests = []
+    orientations = []
+    period = pattern.period
+    for x in range(period):
+        for y in range(2):
+            for z in range(4):
+                pattern = pattern('rccw')
+                if pattern.digest() not in digests:
+                    digests.append(pattern.digest())
+                    orientations.append(lt.pattern(pattern.rle_string()))
+            pattern = pattern('flip_x')
+        pattern = pattern[1]
+    return orientations
+apgcodes2 = set()
+def collide1G(apgcode):
+    global apgcodes2, fullstring
+
+    ipt = lt.pattern(apgcode)
+    orientations = getcanon(ipt)
+    for pt in orientations:
+        if pt.nonempty():
+            bbox = pt.bounding_box
+        else:
+            break
+        x = bbox[0]
+        y = bbox[1]
+        dx = bbox[2]
+        dy = bbox[3]
+        for a in range(8 + dx + dy):
+            collision = pt
+            collision = collision + glider(x - 13 - dy + a, y - 10)
+            evcol = collision[200]
+            if evcol == evcol[2]:
+                apgcode2 = evcol.apgcode
+                if apgcode2 not in apgcodes2:
+                    fullstring = fullstring + striprle(collision.rle_string()) + '\n'
+                    apgcodes2.add(apgcode2)  
+                
+
+fullstring = ''
+glider = lt.pattern('bob$2bo$3o!')
+for x in apgcodes:
+    print(x)
+    collide1G(x)
+f = open('syntheses.txt', 'a')
+f.write(fullstring)
+f.close()       
     

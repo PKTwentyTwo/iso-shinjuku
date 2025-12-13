@@ -223,21 +223,23 @@ def addsynth(pt):
     if oldsynth == []:
         print('New synthesis added!')
         tabulations[tabulation].append(record)
+        pushsynths(tabulation)
     else:
         oldsynth = oldsynth[0]
         oldcost = int(oldsynth[2])
         newcost = int(record[2])
         if newcost < oldcost:
-            print(tabulations[tabulation])
+            print('New synthesis is cheaper than current synthesis.')
             tabulations[tabulation].remove(oldsynth)
             tabulations[tabulation].append(record)
+            pushsynths(tabulation)
         else:
             print('New synthesis is no cheaper than current synthesis.')
-    pushsynths(tabulation)
 def pushsynths(tabulation):
     #Uploads the fresh data to a csv file.
     text = 'input,rle,cost,output\n'
     tabdata = tabulations[tabulation]
+    tablist = []
     for x in tabdata:
         for y in x:
             text = text + y + ','

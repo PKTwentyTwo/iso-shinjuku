@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #This is the CLI for the project.
 #It includes a set of commands that enable easy compilation and management of rules and syntheses.
 #Standard library modules:
