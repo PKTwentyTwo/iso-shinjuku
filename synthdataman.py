@@ -58,7 +58,8 @@ def makequery(fields, tabulation, conditions = []):
     listedfields = ['input', 'rle', 'cost', 'output']
     fielddict = {'input':0,'rle':1,'cost':2,'output':3}
     toreturn = []
-    loadtabulation(tabulation)
+    if tabulation not in tabulations:
+        loadtabulation(tabulation)
     tabulationdata = tabulations[tabulation]
 
     if fields == '*':
@@ -221,20 +222,21 @@ def addsynth(pt):
     makedirstructure(rule, tabulation)
     oldsynth = makequery('*', tabulation, ['input', '=', starting_apgcode, 'AND', 'output', '=', final_apgcode])
     if oldsynth == []:
-        print('New synthesis added!')
+        #print('New synthesis added!')
         tabulations[tabulation].append(record)
-        pushsynths(tabulation)
+        #pushsynths(tabulation)
     else:
         oldsynth = oldsynth[0]
         oldcost = int(oldsynth[2])
         newcost = int(record[2])
         if newcost < oldcost:
-            print('New synthesis is cheaper than current synthesis.')
+            #print('New synthesis is cheaper than current synthesis.')
             tabulations[tabulation].remove(oldsynth)
             tabulations[tabulation].append(record)
-            pushsynths(tabulation)
+            #pushsynths(tabulation)
         else:
-            print('New synthesis is no cheaper than current synthesis.')
+            #print('New synthesis is no cheaper than current synthesis.')
+            pass
 def pushsynths(tabulation):
     #Uploads the fresh data to a csv file.
     text = 'input,rle,cost,output\n'
@@ -334,13 +336,23 @@ def processfile(file):
     f = open(file, 'r')
     rles = f.read().split('\n')
     f.close()
+    line = 0
+    lines = len(rles)
     for rle in rles:
-        if len(rle) == 0:
-            continue
-        if rle[-1] != '!':
-            continue
-        if rle[0] not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'o', 'b', '$', '!']:
-            continue
+        try:
+            line = line + 1
+            if line%100 == 0:
+                print(str(line)+'/'+str(lines)+' syntheses processed.')
+            if len(rle) == 0:
+                continue
+            if rle[-1] != '!':
+                continue
+            if rle[0] not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'o', 'b', '$', '!']:
+                continue
+        except KeyboardInterrupt:
+            print('Received KeyboardInterrupt, terminating...')
+            break
         addsynth(lt.pattern(rle))
-
+    for tabulation in tabulations:
+        pushsynths(tabulation)
 
