@@ -20,5 +20,11 @@ As there are 2<sup>82</sup> rules that might need to be kept track of, a databas
 ## Setup
 The requirements to run the software can be found in /doc.
 
-## Usage
-To interact with a locally cloned copy of the database, run syncmd.py. It is a command line interface with commands suited for uploading components and compiling syntheses. Documentation of commands can be found in /doc/cmd, or by running the command 'help'
+## Command line interface
+To interact with a locally cloned copy of the database, run syncmd.py. It is a command line interface with commands suited for uploading components and compiling syntheses. Documentation of commands can be found in /doc/cmd, or by running the command 'help'.
+
+## Utility software
+iso-shinjuku also comes with a range of utility programs for finding glider syntheses/components, located in /util. Separate documentation can be found in /util/doc.
+These programs include:
+- getstarted.py - Randomly searches 12000 collisions with 2-5 gliders, then collides one glider with all of the results, saving the results of both searches to a text file.
+- downloadsynth.py - Can download syntheses from a Catagolue stdin symmetry, which is created by someone piping glider collisions into apgmera. More information can be found [Here](https://conwaylife.com/wiki/Tutorials/Catagolue_stdin_symmetry).
