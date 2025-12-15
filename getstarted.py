@@ -73,7 +73,7 @@ for g in range(2, 6):
     fullstring = ''
     for x in range(1, 3001):
         if x%1000 == 0:
-            print(str(x)+' out of 10000...')
+            print(str(x)+' out of 3000...')
         processsynth(makesynth(seed + str(x), g))
     f = open('syntheses.txt', 'a')
     f.write(fullstring)

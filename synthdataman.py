@@ -161,7 +161,7 @@ def rewind(pt, amount):
 def isvalid(pt):
     #Determines if a synthesis is valid or not.
     gliders = getgliderset(pt)
-    return rewind(gliders, 1000)[1000].digest() == gliders.digest()
+    return rewind(gliders, 500)[500].digest() == gliders.digest()
 def advance(pt):
     #Advances a synthesis until 3 generations before the number of gliders decreases.
     #A basic binary search is employed to do this.
@@ -239,8 +239,10 @@ def addsynth(pt):
             pass
 def pushsynths(tabulation):
     #Uploads the fresh data to a csv file.
+    print('Uploading syntheses for '+tabulation+'...')
     text = 'input,rle,cost,output\n'
     tabdata = tabulations[tabulation]
+    tabdata.sort()
     tablist = []
     for x in tabdata:
         for y in x:
