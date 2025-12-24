@@ -1,6 +1,6 @@
 Help on command 'license':
 Prints the license of the project (likely MIT).
-Reqires no arguments.
+Requires no arguments.
 
 Example usage:
 license       Prints the license of the project (likely MIT).

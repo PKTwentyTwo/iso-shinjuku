@@ -270,13 +270,16 @@ def compilesynth(steps):
             while cstep[gens].octodigest() != prevstep.octodigest():
 
                 gens = gens + 1
+                print(gens)
                 if gens > 9999:
                     print('Exceeded limit of 9999 generations!') #I had to modify this print statement so it wouldn't be interpreted as a factorial.
                     break
             orientations = ['identity', 'rot270', 'rot180', 'rot90', 'flip_x', 'flip_y', 'swap_xy', 'swap_xy_flip']
             count2 = 0
+            cstep = cstep[gens]
             while cstep(orientations[count2]).digest() != prevstep.digest():
                 count2 = count2 + 1
+                print(count2)
                 if count >= 8:
                     break
             period = cstep.period
@@ -289,7 +292,8 @@ def compilesynth(steps):
             bbox = synth.bounding_box
         else:
             bbox = [0,0,0,0]
-        synth = synth + pt(bbox[2]+bbox[0]+21, 0)
+        ptbbox = pt.bounding_box
+        synth = synth + pt(bbox[2]+bbox[0]+ptbbox[0]+31, 0)
     return synth
 def striptab(apgcode):
     #Gets the tabulation from an apgcode.
@@ -340,6 +344,8 @@ def processfile(file):
     f.close()
     line = 0
     lines = len(rles)
+    if lines > 10000:
+        print('This might take a while. Use Ctrl+C to upload current progress.')
     for rle in rles:
         try:
             line = line + 1
@@ -351,10 +357,11 @@ def processfile(file):
                 continue
             if rle[0] not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'o', 'b', '$', '!']:
                 continue
+            addsynth(lt.pattern(rle))
         except KeyboardInterrupt:
             print('Received KeyboardInterrupt, terminating...')
             break
-        addsynth(lt.pattern(rle))
+    
     for tabulation in tabulations:
         pushsynths(tabulation)
 

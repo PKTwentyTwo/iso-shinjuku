@@ -1,0 +1,10 @@
+Help on command 'clean':
+Cleans the stored data for a rule or tabulation.
+Requires one optional argument: (tabulation).
+Note that to prevent accidental wiping, the user has to enter a displayed pangram.
+
+Example usage:
+load b3s23
+clean xs23        Deletes the file xs23.csv.
+clean             Deletes all files from b3s23, save for .tar.gz archives.
+

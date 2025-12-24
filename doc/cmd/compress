@@ -1,0 +1,7 @@
+Help on command 'compress':
+Compresses the current rule's data into a .tar.gz archive.
+Requires no arguments.
+
+Example usage:
+load b3s23
+compress          Compresses all .csv data files for rule b3s23.

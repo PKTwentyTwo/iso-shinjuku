@@ -1,0 +1,7 @@
+Help on command 'decompress':
+Decompresses any files stored in a .tar.gz archive.
+Requires no arguments.
+
+Example usage:
+load b3s23
+decompress        Decompresses the file b3s23.tar.gz
