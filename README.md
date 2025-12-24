@@ -18,15 +18,15 @@ Previous attempts at finding and documenting syntheses in these rules have often
 As there are 2<sup>82</sup> rules that might need to be kept track of, a database for all of them would require millions of yottabytes. Instead, the project is a database system; peoople investigating rules can fork this repository, add the contributers to the rule as contributers to their fork, then keep the database updated through merge/push requests.
 
 ## Setup
-The requirements to run the software can be found in /doc. Alternatively, on Linux and WSL, you can run [setup.sh](setup.sh), which will install all necessary dependencies.
+The requirements to run the software can be found in [/doc](doc). Alternatively, on Linux and WSL, you can run [setup.sh](setup.sh), which will install all necessary dependencies.
 
 ## Command line interface
-To interact with a locally cloned copy of the database, run syncmd.py. It is a command line interface with commands suited for uploading components and compiling syntheses. Documentation of commands can be found in /doc/cmd, or by running the command 'help'.
+To interact with a locally cloned copy of the database, run [syncmd.py](syncmd.py). It is a command line interface with commands suited for uploading components and compiling syntheses. Documentation of commands can be found in /doc/cmd, or by running the command 'help'.
 
 A graphical user interface is being developed as an alternative to the CLI.
 
 ## Utility software
-iso-shinjuku also comes with a range of utility programs for finding glider syntheses/components, located in /util. Separate documentation can be found in /util/doc.
+iso-shinjuku also comes with a range of utility programs for finding glider syntheses/components, located in [/util](util). Separate documentation can be found in /util/doc.
 These programs include:
 - getstarted.py - Randomly searches 12000 collisions with 2-5 gliders, then collides one glider with all of the results, saving the results of both searches to a text file.
-- downloadsynth.py - Can download syntheses from a Catagolue stdin symmetry, which is created by someone piping glider collisions into apgmera. More information can be found [Here](https://conwaylife.com/wiki/Tutorials/Catagolue_stdin_symmetry).
+- downloadsynth.py - Can download syntheses from a Catagolue stdin symmetry, which is created by someone piping glider collisions into apgmera. More information can be found [here](https://conwaylife.com/wiki/Tutorials/Catagolue_stdin_symmetry).
