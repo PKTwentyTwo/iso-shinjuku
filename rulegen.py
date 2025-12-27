@@ -17,7 +17,7 @@ def parserule(rule):
     rule = rule.lower().replace('/', '')
     #Dictionary mapping digits to their Hensel notation letters.
     conditiondict = {
-        '0':[],
+        '0':[''],
         '1':['c', 'e'],
         '2':['a','c','e','i','k','n'],
         '3':['a','c','e','i','j','k','n','q','r','y'],
@@ -25,7 +25,7 @@ def parserule(rule):
         '5':['a','c','e','i','j','k','n','q','r','y'],
         '6':['a','c','e','i','k','n'],
         '7':['c', 'e'],
-        '8':[]
+        '8':['']
         }
     conditions = []
     digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -75,3 +75,141 @@ def parserule(rule):
             birth = False
         cstring = cstring + character
     return conditions
+
+#Ok, here we go.
+def makeseparator(rule):
+    #AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    #This was pain. This is pain.
+    rule = rule.lower().replace('/', '')
+    conditions = parserule(rule)
+    ruletable = '@RULE '+rule+'_separate\n'
+    ruletable += '\n' + 'The separation algorithm ruletable for '+rule+'.\n'
+    ruletable += '@TABLE\n'
+    ruletable += 'n_states:3\n'
+    ruletable += 'neighborhood:Moore\n'
+    ruletable += 'symmetries:rotate4reflect\n'
+    ruletable += '''var a = {0,2}
+var b = {0,2}
+var c = {0,2}
+var d = {0,2}
+var e = {0,2}
+var f = {0,2}
+var g = {0,2}
+var h = {0,2}
+var i = {0,2}
+'''
+    #Setting up the conditions.
+    #We only need to run this once per rule, so having literally hundreds of if statements won't cause slowdown.
+    #Writing it can, however, still cause damage to mental health. Viewer discretion is advised.
+    if 'B1e' in conditions:
+        ruletable += 'a,1,b,c,d,e,f,g,h,1\n'
+    if 'B1c' in conditions:
+        ruletable += 'a,b,1,c,d,e,f,g,h,1\n'
+
+    if 'B2a' in conditions:
+        ruletable += 'a,1,1,b,c,d,e,f,g,1\n'
+    if 'B2c' in conditions:
+        ruletable += 'a,b,1,c,1,d,e,f,g,1\n'
+    if 'B2e' in conditions:
+        ruletable += 'a,1,b,1,c,d,e,f,g,1\n'
+    if 'B2i' in conditions:
+        ruletable += 'a,1,b,c,d,1,e,f,g,1\n'
+    if 'B2k' in conditions:
+        ruletable += 'a,1,b,c,1,d,e,f,g,1\n'
+    if 'B2n' in conditions:
+        ruletable += 'a,b,1,c,d,e,f,1,g,1\n'
+
+    if 'B3a' in conditions:
+        ruletable += 'a,1,1,1,b,c,d,e,f,1\n'
+    if 'B3c' in conditions:
+        ruletable += 'a,b,1,c,1,d,1,e,f,1\n'
+    if 'B3e' in conditions:
+        ruletable += 'a,1,b,1,c,1,d,e,f,1\n'
+    if 'B3i' in conditions:
+        ruletable += 'a,b,1,1,1,c,d,e,f,1\n'
+    if 'B3j' in conditions:
+        ruletable += 'a,1,b,1,1,c,d,e,f,1\n'
+    if 'B3k' in conditions:
+        ruletable += 'a,1,b,1,c,d,1,e,f,1\n'
+    if 'B3n' in conditions:
+        ruletable += 'a,1,1,b,1,c,d,e,f,1\n'
+    if 'B3q' in conditions:
+        ruletable += 'a,1,1,b,c,d,1,e,f,1\n'
+    if 'B3r' in conditions:
+        ruletable += 'a,1,1,b,c,1,d,e,f,1\n'
+    if 'B3y' in conditions:
+        ruletable += 'a,1,b,c,1,d,1,e,f,1\n'
+
+    if 'B4a' in conditions:
+        ruletable += 'a,1,1,1,1,b,c,d,e,1\n'
+    if 'B4c' in conditions:
+        ruletable += 'a,b,1,c,1,d,1,e,1,1\n'
+    if 'B4e' in conditions:
+        ruletable += 'a,1,b,1,c,1,d,1,e,1\n'
+    if 'B4i' in conditions:
+        ruletable += 'a,1,1,b,1,1,c,d,e,1\n'
+    if 'B4j' in conditions:
+        ruletable += 'a,1,1,b,c,1,d,1,e,1\n'
+    if 'B4k' in conditions:
+        ruletable += 'a,1,1,b,1,c,d,1,e,1\n'
+    if 'B4n' in conditions:
+        ruletable += 'a,b,1,c,1,1,1,d,e,1\n'
+    if 'B4q' in conditions:
+        ruletable += 'a,1,1,1,b,c,1,d,e,1\n'
+    if 'B4r' in conditions:
+        ruletable += 'a,1,1,1,b,1,c,d,e,1\n'
+    if 'B4t' in conditions:
+        ruletable += 'a,1,b,c,1,1,1,d,e,1\n'
+    if 'B4w' in conditions:
+        ruletable += 'a,1,1,b,c,d,1,1,e,1\n'
+    if 'B4y' in conditions:
+        ruletable += 'a,1,1,b,1,c,1,d,e,1\n'
+    if 'B4z' in conditions:
+        ruletable += 'a,1,1,b,c,1,1,d,e,1\n'
+
+    if 'B5a' in conditions:
+        ruletable += 'a,b,1,1,1,1,1,c,d,1\n'
+    if 'B5c' in conditions:
+        ruletable += 'a,1,b,1,c,1,1,1,d,1\n'
+    if 'B5e' in conditions:
+        ruletable += 'a,b,1,1,1,c,1,d,1,1\n'
+    if 'B5i' in conditions:
+        ruletable += 'a,1,1,1,1,1,b,c,d,1\n'
+    if 'B5j' in conditions:
+        ruletable += 'a,1,1,1,1,b,1,c,d,1\n'
+    if 'B5k' in conditions:
+        ruletable += 'a,b,1,1,c,1,1,d,1,1\n'
+    if 'B5n' in conditions:
+        ruletable += 'a,1,b,1,1,1,1,c,d,1\n'
+    if 'B5q' in conditions:
+        ruletable += 'a,1,1,1,b,1,1,c,d,1\n'
+    if 'B5r' in conditions:
+        ruletable += 'a,b,c,1,1,d,1,1,1,1\n'
+    if 'B5y' in conditions:
+        ruletable += 'a,1,b,1,1,c,1,1,d,1\n'
+
+    if 'B6a' in conditions:
+        ruletable += 'a,1,1,1,1,1,1,b,c,1\n'
+    if 'B6c' in conditions:
+        ruletable += 'a,1,b,1,1,1,1,1,c,1\n'
+    if 'B6e' in conditions:
+        ruletable += 'a,b,1,c,1,1,1,1,1,1\n'
+    if 'B6i' in conditions:
+        ruletable += 'a,b,1,1,1,c,1,1,1,1\n'
+    if 'B6k' in conditions:
+        ruletable += 'a,b,1,1,c,1,1,1,1,1\n'
+    if 'B6n' in conditions:
+        ruletable += 'a,1,1,1,b,1,1,1,c,1\n'
+
+    if 'B7c' in conditions:
+        ruletable += 'a,1,b,1,1,1,1,1,1,1\n'
+    if 'B7e' in conditions:
+        ruletable += 'a,b,1,1,1,1,1,1,1,1\n'
+
+    if 'B8' in conditions:
+        ruletable += 'a,1,1,1,1,1,1,1,1,1\n'
+
+    #Survival conditions:
+    
+    print(ruletable)
+makeseparator('B3/S')
