@@ -210,6 +210,115 @@ var i = {0,2}
         ruletable += 'a,1,1,1,1,1,1,1,1,1\n'
 
     #Survival conditions:
+    if 'S0' not in conditions:
+        ruletable += '1,a,b,c,d,e,f,g,h,2\n'
     
-    print(ruletable)
-makeseparator('B3/S')
+    if 'S1e' not in conditions:
+        ruletable += '1,1,b,c,d,e,f,g,h,2\n'
+    if 'S1c' not in conditions:
+        ruletable += '1,b,1,c,d,e,f,g,h,2\n'
+
+    if 'S2a' not in conditions:
+        ruletable += '1,1,1,b,c,d,e,f,g,2\n'
+    if 'S2c' not in conditions:
+        ruletable += '1,b,1,c,1,d,e,f,g,2\n'
+    if 'S2e' not in conditions:
+        ruletable += '1,1,b,1,c,d,e,f,g,2\n'
+    if 'S2i' not in conditions:
+        ruletable += '1,1,b,c,d,1,e,f,g,2\n'
+    if 'S2k' not in conditions:
+        ruletable += '1,1,b,c,1,d,e,f,g,2\n'
+    if 'S2n' not in conditions:
+        ruletable += '1,b,1,c,d,e,f,1,g,2\n'
+
+    if 'S3a' not in conditions:
+        ruletable += '1,1,1,1,b,c,d,e,f,2\n'
+    if 'S3c' not in conditions:
+        ruletable += '1,b,1,c,1,d,1,e,f,2\n'
+    if 'S3e' not in conditions:
+        ruletable += '1,1,b,1,c,1,d,e,f,2\n'
+    if 'S3i' not in conditions:
+        ruletable += '1,b,1,1,1,c,d,e,f,2\n'
+    if 'S3j' not in conditions:
+        ruletable += '1,1,b,1,1,c,d,e,f,2\n'
+    if 'S3k' not in conditions:
+        ruletable += '1,1,b,1,c,d,1,e,f,2\n'
+    if 'S3n' not in conditions:
+        ruletable += '1,1,1,b,1,c,d,e,f,2\n'
+    if 'S3q' not in conditions:
+        ruletable += '1,1,1,b,c,d,1,e,f,2\n'
+    if 'S3r' not in conditions:
+        ruletable += '1,1,1,b,c,1,d,e,f,2\n'
+    if 'S3y' not in conditions:
+        ruletable += '1,1,b,c,1,d,1,e,f,2\n'
+
+    if 'S4a' not in conditions:
+        ruletable += '1,1,1,1,1,b,c,d,e,2\n'
+    if 'S4c' not in conditions:
+        ruletable += '1,b,1,c,1,d,1,e,1,2\n'
+    if 'S4e' not in conditions:
+        ruletable += '1,1,b,1,c,1,d,1,e,2\n'
+    if 'S4i' not in conditions:
+        ruletable += '1,1,1,b,1,1,c,d,e,2\n'
+    if 'S4j' not in conditions:
+        ruletable += '1,1,1,b,c,1,d,1,e,2\n'
+    if 'S4k' not in conditions:
+        ruletable += '1,1,1,b,1,c,d,1,e,2\n'
+    if 'S4n' not in conditions:
+        ruletable += '1,b,1,c,1,1,1,d,e,2\n'
+    if 'S4q' not in conditions:
+        ruletable += '1,1,1,1,b,c,1,d,e,2\n'
+    if 'S4r' not in conditions:
+        ruletable += '1,1,1,1,b,1,c,d,e,2\n'
+    if 'S4t' not in conditions:
+        ruletable += '1,1,b,c,1,1,1,d,e,2\n'
+    if 'S4w' not in conditions:
+        ruletable += '1,1,1,b,c,d,1,1,e,2\n'
+    if 'S4y' not in conditions:
+        ruletable += '1,1,1,b,1,c,1,d,e,2\n'
+    if 'S4z' not in conditions:
+        ruletable += '1,1,1,b,c,1,1,d,e,2\n'
+
+    if 'S5a' not in conditions:
+        ruletable += '1,b,1,1,1,1,1,c,d,2\n'
+    if 'S5c' not in conditions:
+        ruletable += '1,1,b,1,c,1,1,1,d,2\n'
+    if 'S5e' not in conditions:
+        ruletable += '1,b,1,1,1,c,1,d,1,2\n'
+    if 'S5i' not in conditions:
+        ruletable += '1,1,1,1,1,1,b,c,d,2\n'
+    if 'S5j' not in conditions:
+        ruletable += '1,1,1,1,1,b,1,c,d,2\n'
+    if 'S5k' not in conditions:
+        ruletable += '1,b,1,1,c,1,1,d,1,2\n'
+    if 'S5n' not in conditions:
+        ruletable += '1,1,b,1,1,1,1,c,d,2\n'
+    if 'S5q' not in conditions:
+        ruletable += '1,1,1,1,b,1,1,c,d,2\n'
+    if 'S5r' not in conditions:
+        ruletable += '1,b,c,1,1,d,1,1,1,2\n'
+    if 'S5y' not in conditions:
+        ruletable += '1,1,b,1,1,c,1,1,d,2\n'
+
+    if 'S6a' not in conditions:
+        ruletable += '1,1,1,1,1,1,1,b,c,2\n'
+    if 'S6c' not in conditions:
+        ruletable += '1,1,b,1,1,1,1,1,c,2\n'
+    if 'S6e' not in conditions:
+        ruletable += '1,b,1,c,1,1,1,1,1,2\n'
+    if 'S6i' not in conditions:
+        ruletable += '1,b,1,1,1,c,1,1,1,2\n'
+    if 'S6k' not in conditions:
+        ruletable += '1,b,1,1,c,1,1,1,1,2\n'
+    if 'S6n' not in conditions:
+        ruletable += '1,1,1,1,b,1,1,1,c,2\n'
+
+    if 'S7c' not in conditions:
+        ruletable += '1,1,b,1,1,1,1,1,1,2\n'
+    if 'S7e' not in conditions:
+        ruletable += '1,b,1,1,1,1,1,1,1,2\n'
+
+    if 'S8' not in conditions:
+        ruletable += '1,1,1,1,1,1,1,1,1,2\n'   
+    return ruletable
+print(makeseparator('B3/S23-a5'))
