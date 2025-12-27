@@ -77,7 +77,7 @@ def parserule(rule):
     return conditions
 
 #Ok, here we go.
-def makeseparator(rule):
+def makeseparator(rule, pseudo=False):
     #AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     #This was pain. This is pain.
     rule = rule.lower().replace('/', '')
@@ -97,10 +97,19 @@ var f = {0,2}
 var g = {0,2}
 var h = {0,2}
 var i = {0,2}
+
+var A = {0,1,2}
+var B = {0,1,2}
+var C = {0,1,2}
+var D = {0,1,2}
+var E = {0,1,2}
+var F = {0,1,2}
+var G = {0,1,2}
+var H = {0,1,2}
 '''
     #Setting up the conditions.
     #We only need to run this once per rule, so having literally hundreds of if statements won't cause slowdown.
-    #Writing it can, however, still cause damage to mental health. Viewer discretion is advised.
+    #Writing it can, however, still cause damage to mental health and sanity.
     if 'B1e' in conditions:
         ruletable += 'a,1,b,c,d,e,f,g,h,1\n'
     if 'B1c' in conditions:
@@ -208,7 +217,29 @@ var i = {0,2}
 
     if 'B8' in conditions:
         ruletable += 'a,1,1,1,1,1,1,1,1,1\n'
+    #These are the conditions for detecting induction coils.
+    #They have to be added after the birth conditions so that the birth conditions take priority.
+    if 'B3i' in conditions:
+        ruletable += 'a,b,1,1,1,c,1,d,e,2\n' #B4n
+        ruletable += 'a,b,1,1,1,c,1,1,1,2\n' #B6i
+        ruletable += 'a,b,1,1,1,c,1,d,1,2\n' #B5e
+        ruletable += 'a,b,1,1,1,c,d,1,e,2\n' #B4t
+        ruletable += 'a,b,1,1,1,c,d,1,1,2\n' #B5r
+    if 'B3a' in conditions:
+        ruletable += 'a,1,1,1,b,c,1,d,e,2\n' #B4q
+    if 'B3c' in conditions:
+        ruletable += 'a,b,1,c,1,d,1,e,1,2\n' #B4c
+    if 'B3n' in conditions:
+        ruletable += 'a,b,1,c,d,1,1,e,1,2\n' #B4y
+    if 'B3q' in conditions:
+        ruletable += 'a,b,1,c,d,1,1,e,1,2\n' #B4y
+    if 'B3j' in conditions:
+        
 
+
+
+
+    
     #Survival conditions:
     if 'S0' not in conditions:
         ruletable += '1,a,b,c,d,e,f,g,h,2\n'
