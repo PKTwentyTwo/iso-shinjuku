@@ -1,6 +1,6 @@
 #This is just a basic shell script to check if all required modules are installed.
 echo "Checking if packages are installed..."
-for pkg in "git" "python3" "python3-tk" "python3-numpy" "python3-imageio"; do
+for pkg in "git" "python3"; do
 	cmd=$( which $pkg )
 	if [[ $cmd == "" ]]; then
 		echo $pkg "is not installed."
@@ -10,6 +10,7 @@ for pkg in "git" "python3" "python3-tk" "python3-numpy" "python3-imageio"; do
 	else
 		echo $pkg "is installed."
 	fi
-echo "Checking if lifelib is installed..."
-python3 install-lifelib.py
-done
+done	
+echo "Running Python setup script..."
+python3 setup.py
+

@@ -1,3 +1,6 @@
+#This contains functions for dealing with rulestrings and ruletables.
+#It is, at present, the largest code file in the repo, because of just how many transitions it has to account for.
+
 import re, copy
 def isvalid(rule):
     #Checks if a rule is valid using regex.
@@ -78,8 +81,8 @@ def parserule(rule):
 
 #Ok, here we go.
 def makeseparator(rule, pseudo=False):
-    #AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-    #This was pain. This is pain.
+    #This creates a ruletable which can be used to separate any periodic constellation.
+    #It does not separate pseudo still lifes, since for the purposes of constellation synthesis, it is better to treat them as a single still life.
     rule = rule.lower().replace('/', '')
     conditions = parserule(rule)
     ruletable = '@RULE '+rule+'_separate\n'
@@ -217,24 +220,130 @@ var H = {0,1,2}
 
     if 'B8' in conditions:
         ruletable += 'a,1,1,1,1,1,1,1,1,1\n'
-    #These are the conditions for detecting induction coils.
-    #They have to be added after the birth conditions so that the birth conditions take priority.
-    if 'B3i' in conditions:
-        ruletable += 'a,b,1,1,1,c,1,d,e,2\n' #B4n
-        ruletable += 'a,b,1,1,1,c,1,1,1,2\n' #B6i
-        ruletable += 'a,b,1,1,1,c,1,d,1,2\n' #B5e
-        ruletable += 'a,b,1,1,1,c,d,1,e,2\n' #B4t
-        ruletable += 'a,b,1,1,1,c,d,1,1,2\n' #B5r
+##    #These are the conditions for detecting induction coils.
+##    #They have to be added after the birth conditions so that the birth conditions take priority.
+##    if 'B3i' in conditions:
+##        ruletable += 'a,b,1,1,1,c,1,d,e,2\n' #B4n
+##        ruletable += 'a,b,1,1,1,c,1,1,1,2\n' #B6i
+##        ruletable += 'a,b,1,1,1,c,1,d,1,2\n' #B5e
+##        ruletable += 'a,b,1,1,1,c,d,1,e,2\n' #B4t
+##        ruletable += 'a,b,1,1,1,c,d,1,1,2\n' #B5r
+##    if 'B3a' in conditions:
+##        ruletable += 'a,1,1,1,b,c,1,d,e,2\n' #B4q
+##    if 'B3c' in conditions:
+##        ruletable += 'a,b,1,c,1,d,1,e,1,2\n' #B4c
+##    if 'B3n' in conditions:
+##        ruletable += 'a,b,1,c,d,1,1,e,1,2\n' #B4y
+##    if 'B3q' in conditions:
+##        ruletable += 'a,b,1,c,d,1,1,e,1,2\n' #B4y
+##    if 'B3j' in conditions:
+    if 'B1e' in conditions:
+        ruletable += 'a,1,B,C,D,E,F,G,H,2\n'
+    if 'B1c' in conditions:
+        ruletable += 'a,B,1,C,D,E,F,G,H,2\n'
+
+    if 'B2a' in conditions:
+        ruletable += 'a,1,1,B,C,D,E,F,G,2\n'
+    if 'B2c' in conditions:
+        ruletable += 'a,B,1,C,1,D,E,F,G,2\n'
+    if 'B2e' in conditions:
+        ruletable += 'a,1,B,1,C,D,E,F,G,2\n'
+    if 'B2i' in conditions:
+        ruletable += 'a,1,B,C,D,1,E,F,G,2\n'
+    if 'B2k' in conditions:
+        ruletable += 'a,1,B,C,1,D,E,F,G,2\n'
+    if 'B2n' in conditions:
+        ruletable += 'a,B,1,C,D,E,F,1,G,2\n'
+
     if 'B3a' in conditions:
-        ruletable += 'a,1,1,1,b,c,1,d,e,2\n' #B4q
+        ruletable += 'a,1,1,1,B,C,D,E,F,2\n'
     if 'B3c' in conditions:
-        ruletable += 'a,b,1,c,1,d,1,e,1,2\n' #B4c
-    if 'B3n' in conditions:
-        ruletable += 'a,b,1,c,d,1,1,e,1,2\n' #B4y
-    if 'B3q' in conditions:
-        ruletable += 'a,b,1,c,d,1,1,e,1,2\n' #B4y
+        ruletable += 'a,B,1,C,1,D,1,E,F,2\n'
+    if 'B3e' in conditions:
+        ruletable += 'a,1,B,1,C,1,D,E,F,2\n'
+    if 'B3i' in conditions:
+        ruletable += 'a,B,1,1,1,C,D,E,F,2\n'
     if 'B3j' in conditions:
-        
+        ruletable += 'a,1,B,1,1,C,D,E,F,2\n'
+    if 'B3k' in conditions:
+        ruletable += 'a,1,B,1,C,D,1,E,F,2\n'
+    if 'B3n' in conditions:
+        ruletable += 'a,1,1,B,1,C,D,E,F,2\n'
+    if 'B3q' in conditions:
+        ruletable += 'a,1,1,B,C,D,1,E,F,2\n'
+    if 'B3r' in conditions:
+        ruletable += 'a,1,1,B,C,1,D,E,F,2\n'
+    if 'B3y' in conditions:
+        ruletable += 'a,1,B,C,1,D,1,E,F,2\n'
+
+    if 'B4a' in conditions:
+        ruletable += 'a,1,1,1,1,B,C,D,E,2\n'
+    if 'B4c' in conditions:
+        ruletable += 'a,B,1,C,1,D,1,E,1,2\n'
+    if 'B4e' in conditions:
+        ruletable += 'a,1,B,1,C,1,D,1,E,2\n'
+    if 'B4i' in conditions:
+        ruletable += 'a,1,1,B,1,1,C,D,E,2\n'
+    if 'B4j' in conditions:
+        ruletable += 'a,1,1,B,C,1,D,1,E,2\n'
+    if 'B4k' in conditions:
+        ruletable += 'a,1,1,B,1,C,D,1,E,2\n'
+    if 'B4n' in conditions:
+        ruletable += 'a,B,1,C,1,1,1,D,E,2\n'
+    if 'B4q' in conditions:
+        ruletable += 'a,1,1,1,B,C,1,D,E,2\n'
+    if 'B4r' in conditions:
+        ruletable += 'a,1,1,1,B,1,C,D,E,2\n'
+    if 'B4t' in conditions:
+        ruletable += 'a,1,B,C,1,1,1,D,E,2\n'
+    if 'B4w' in conditions:
+        ruletable += 'a,1,1,B,C,D,1,1,E,2\n'
+    if 'B4y' in conditions:
+        ruletable += 'a,1,1,B,1,C,1,D,E,2\n'
+    if 'B4z' in conditions:
+        ruletable += 'a,1,1,B,C,1,1,D,E,2\n'
+
+    if 'B5a' in conditions:
+        ruletable += 'a,B,1,1,1,1,1,C,D,2\n'
+    if 'B5c' in conditions:
+        ruletable += 'a,1,B,1,C,1,1,1,D,2\n'
+    if 'B5e' in conditions:
+        ruletable += 'a,B,1,1,1,C,1,D,1,2\n'
+    if 'B5i' in conditions:
+        ruletable += 'a,1,1,1,1,1,B,C,D,2\n'
+    if 'B5j' in conditions:
+        ruletable += 'a,1,1,1,1,B,1,C,D,2\n'
+    if 'B5k' in conditions:
+        ruletable += 'a,B,1,1,C,1,1,D,1,2\n'
+    if 'B5n' in conditions:
+        ruletable += 'a,1,B,1,1,1,1,C,D,2\n'
+    if 'B5q' in conditions:
+        ruletable += 'a,1,1,1,B,1,1,C,D,2\n'
+    if 'B5r' in conditions:
+        ruletable += 'a,B,C,1,1,D,1,1,1,2\n'
+    if 'B5y' in conditions:
+        ruletable += 'a,1,B,1,1,C,1,1,D,2\n'
+
+    if 'B6a' in conditions:
+        ruletable += 'a,1,1,1,1,1,1,B,C,2\n'
+    if 'B6c' in conditions:
+        ruletable += 'a,1,B,1,1,1,1,1,C,2\n'
+    if 'B6e' in conditions:
+        ruletable += 'a,B,1,C,1,1,1,1,1,2\n'
+    if 'B6i' in conditions:
+        ruletable += 'a,B,1,1,1,C,1,1,1,2\n'
+    if 'B6k' in conditions:
+        ruletable += 'a,B,1,1,C,1,1,1,1,2\n'
+    if 'B6n' in conditions:
+        ruletable += 'a,1,1,1,B,1,1,1,C,2\n'
+
+    if 'B7c' in conditions:
+        ruletable += 'a,1,B,1,1,1,1,1,1,2\n'
+    if 'B7e' in conditions:
+        ruletable += 'a,B,1,1,1,1,1,1,1,2\n'
+
+    if 'B8' in conditions:
+        ruletable += 'a,1,1,1,1,1,1,1,1,2\n'        
 
 
 
@@ -352,4 +461,27 @@ var H = {0,1,2}
     if 'S8' not in conditions:
         ruletable += '1,1,1,1,1,1,1,1,1,2\n'   
     return ruletable
-print(makeseparator('B3/S23-a5'))
+
+def makerinser():
+    #Returns the ruletable to clean off the state 2 cells from a pattern.
+    table = '''@RULE isosjk_rinser
+
+Removes state-2 cells.
+
+@TABLE
+n_states:3
+neighborhood:Moore
+symmetries:rotate4reflect
+
+var a = {0,1}
+var b = {0,1}
+var c = {0,1}
+var d = {0,1}
+var e = {0,1}
+var f = {0,1}
+var g = {0,1}
+var h = {0,1}
+
+2,a,b,c,d,e,f,g,h,0
+'''
+    return table
