@@ -2,7 +2,7 @@
 #This is the CLI for the project.
 #It includes a set of commands that enable easy compilation and management of rules and syntheses.
 #Standard library modules:
-import os, platform, math, time, sys, tarfile, random
+import os, time, sys, tarfile, random
 #Project modules:
 import synthdataman as synthdata
 #Try and import lifelib. If it fails, prompt the user to install it.
@@ -18,14 +18,13 @@ except ImportError:
 rule = ''
 running = True
 def verifyargs(args, lengths):
-    #Check that the right number of arguments have been supplied for a command.
+    '''Checks that the right number of arguments have been supplied for a command.'''
     if len(args) not in lengths:
         return False
     else:
         return True
-
 def loadrule(args):
-    #Loads a rule, meaning it is used for all operations until a new one is loaded.
+    '''Loads a rule, meaning it is used for all operations until a new one is loaded.'''
     #This is key as a lifetree can only support a single rule.
     global rule
     if not verifyargs(args, [1]):
@@ -49,7 +48,7 @@ def loadrule(args):
     synthdata.rule = rule
     print('Successfully loaded rule '+rule+'.')
 def makesynthesis(args):
-    #Assembles a synthesis for a given apgcode.
+    '''Assembles a synthesis for a given apgcode.'''
     if not verifyargs(args, [1]):
         print('Usage: synth <apgcode>')
         return ''
@@ -57,9 +56,8 @@ def makesynthesis(args):
         print('You must specify a rule! Use \'load <rule>\' to choose a rule!')
         return ''
     synthdata.assemblesynth(args[0])
-
 def parsecommand(command):
-    #Parses a command.
+    '''Parses a command.'''
     #Elements are separated by spaces, unless inside quotes.
     #Comments are achieved with hashtags.
     commandlength = len(command)
@@ -81,15 +79,14 @@ def parsecommand(command):
             currentarg = currentarg + command[x]
     if currentarg != '':
         parsed.append(currentarg)
-
     return parsed
 def exitshell(args):
-    #Self-explanatory.
+    '''Exits the current session.'''
     global running
     print('Terminating...')
     running = False
 def procfile(args):
-    #Processes a file, committing any new components to the database.
+    '''Processes a file, committing any new components to the database.'''
     if not verifyargs(args, [1]):
         print('Usage: process <file>')
         return ''
@@ -106,7 +103,7 @@ def procfile(args):
         return ''
     print('Succesfully processed file.')
 def compress(args):
-    #Used to compress all csv files in a rule's folder.
+    '''Compresses all csv files in a rule's folder.'''
     #Useful when committing using Git.
     #It uses the tar.gz format, since Python has good support for both tar and gzip.
     if not verifyargs(args, [0]):
@@ -131,7 +128,7 @@ def compress(args):
     print('Compression completed successfully.')
     print('Compression rate: '+str(filesize1)+' KB -> '+str(filesize2)+' KB') #Most files will range in the kilobytes, although xp2.csv can reach megabytes.   
 def decompress(args):
-    #Decompresses a saved .tar.gz archive, if one can be located for the loaded rule.
+    '''Decompresses a saved .tar.gz archive, if one can be located for the loaded rule.'''
     if not verifyargs(args, [0]):
         print('Usage: decompress')
         return ''
@@ -146,7 +143,7 @@ def decompress(args):
     tar.close()
     print('Decompression successful.')
 def clean(args):
-    #Wipes a rule or tabulation.
+    '''Wipes a rule or tabulation.'''
     #To prevent accidental wiping, the user has to enter one of five control sentences.
     if not verifyargs(args, [0, 1]):
         print('Usage: decompress')
@@ -180,11 +177,9 @@ def clean(args):
             os.remove(ruledir + '/' + args[0] + '.csv')
             print('Successfully removed '+args[0] + '.csv')
         else:
-            print('Unable to locate '+args[0] + '.csv')
-    
-        
-                
+            print('Unable to locate '+args[0] + '.csv')                
 def printlicense(args):
+    '''Prints the project's license.'''
     if os.path.exists(os.getcwd() + '/LICENSE'):
         f = open('LICENSE', 'r')
         print(f.read())
@@ -213,6 +208,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''')
 def providehelp(args):
+    '''Checks /doc/cmd for details about commands.'''
     if not verifyargs(args, [0,1]):
         print('Usage: \'help <command>\' or \'help\'')
         return ''
@@ -241,6 +237,7 @@ def providehelp(args):
         else:
             print('Could not find command '+command+'. Type \'help\' for a list of commands.')
 def executecommand(arguments):
+    '''Executes a command given the parsed arguments.'''
     if len(arguments) > 0:
         command = arguments[0]
     else:

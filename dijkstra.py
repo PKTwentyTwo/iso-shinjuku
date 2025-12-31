@@ -1,20 +1,14 @@
-#An implementation of Djikstra's algorithm.
+'''An implementation of Djikstra's algorithm.'''
 #See https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm for more info.
 #It can find the shortest path between two points on a network with n nodes in O(n^2) time.
-#In this project (as well as the original Shinjuku), it is used to compile optimal syntheses from avaliable components.
-
-
-#My testing variables are below. Note that they are not accurate to real data.
-##nodes = ['xs0_0', 'xs4_33', 'xs5_253', 'xs7_25ac']
-##distances = {'xs4_33':{'xs5_253':1, 'xs0_0':1, 'xs7_25ac':2}, 'xs5_253':{'xs4_33':1, 'xs0_0':2}, 'xs7_25ac':{'xs4_33':3,'xs0_0':5,'xs5_253':2}, 'xs0_0':{'xs4_33':1, 'xs5_253':1,'xs7_25ac':1}}
-##target = 'xs0_0'
-##startpoint = 'xs7_25ac'
-import copy, random
+#In this project (as well as the original Shinjuku), it is used 
+#to compile optimal syntheses from avaliable components.
+import copy
+import random
 values = {}
 visited = []
 def applydistances(node, distances, paths):
-    global values, visited
-    
+    '''Applies the distances to recalculate the values assigned to nodes.'''
     for x in distances[node]:
         distance = values[node] + distances[node][x]
         if distance < values[x]:
@@ -23,7 +17,8 @@ def applydistances(node, distances, paths):
             paths[x] += [x]
     visited.append(node)
     return paths
-def getclosestunvisited(nodes, visited):
+def getclosestunvisited(nodes):
+    '''Finds the closest unvisited node to the current node.'''
     mindistance = 999999
     minnode = None
     for x in nodes:
@@ -40,10 +35,8 @@ in as few gliders as possible.'''
     visited = []
     paths = {x:[] for x in nodes}
     paths[startpoint] = []
-
-
     while len(visited) < len(nodes):
-        selectednode = getclosestunvisited(nodes, visited)
+        selectednode = getclosestunvisited(nodes)
         paths = applydistances(selectednode, distances, paths)
     if target not in values:
         if len(nodes) > 1:
@@ -55,10 +48,7 @@ in as few gliders as possible.'''
                 nodes2.remove(node)
                 giventargets.append(node)
             return ['Error', giventargets]
-        else:
-            return ['Error']
+        return ['Error']
     if values[target] < 999999:
         path = paths[target][::-1] + [startpoint]
-
-    return path
-        
+    return path 

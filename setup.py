@@ -15,12 +15,4 @@ dirs = ['doc', 'rules', 'util', 'tables']
 for x in dirs:
     if not os.path.exists(os.getcwd() + '/' + x):
         os.mkdir(os.getcwd() + '/' + x)
-
-print('Step 3: Creating the rinser table...')
-import rulegen
-table = rulegen.makerinser()
-f = open(os.getcwd() + '/tables/isosjk_rinser.rule', 'w')
-f.write(table)
-f.close()
-
 print('Setup complete.')

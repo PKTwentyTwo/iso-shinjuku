@@ -3,15 +3,12 @@
 
 import re, copy
 def isvalid(rule):
-    #Checks if a rule is valid using regex.
+    '''Checks if a rule is valid using regex.'''
     rule = rule.lower().replace('/', '')
-    if re.match('b[1-8ceaiknjqrytwz-]*s[0-8ceaiknjqrytwz-]*', rule):
-        return True
-    else:
-        return False
+    return bool(re.match('b[1-8ceaiknjqrytwz-]*s[0-8ceaiknjqrytwz-]*', rule))
 print(isvalid('B3/S23'))
 def parserule(rule):
-    #Takes a rule and returns a list of birth and survival conditions.
+    '''Takes a rule and returns a list of birth and survival conditions.'''
     #I hate having to code parsers.
     #(Still better than the next function, which will be 250+ lines)
     if not isvalid(rule):
@@ -78,14 +75,13 @@ def parserule(rule):
             birth = False
         cstring = cstring + character
     return conditions
-
-#Ok, here we go.
 def makeseparator(rule, pseudo=False):
-    #This creates a ruletable which can be used to separate any periodic constellation.
-    #It does not separate pseudo still lifes, since for the purposes of constellation synthesis, it is better to treat them as a single still life.
+    ''''Creates a ruletable which can be used to separate any periodic constellation.
+    It does not separate pseudo still lifes, since for the purposes of constellation synthesis, it is better to treat them as a single still life.'''
+    pseudo = pseudo or False
     rule = rule.lower().replace('/', '')
     conditions = parserule(rule)
-    ruletable = '@RULE '+rule+'_separate\n'
+    ruletable = '@RULE ISOSJK_'+rule+'_separate\n'
     ruletable += '\n' + 'The separation algorithm ruletable for '+rule+'.\n'
     ruletable += '@TABLE\n'
     ruletable += 'n_states:3\n'
@@ -113,11 +109,12 @@ var H = {0,1,2}
     #Setting up the conditions.
     #We only need to run this once per rule, so having literally hundreds of if statements won't cause slowdown.
     #Writing it can, however, still cause damage to mental health and sanity.
+    #B1 conditions:
     if 'B1e' in conditions:
         ruletable += 'a,1,b,c,d,e,f,g,h,1\n'
     if 'B1c' in conditions:
         ruletable += 'a,b,1,c,d,e,f,g,h,1\n'
-
+    #B2 conditions:
     if 'B2a' in conditions:
         ruletable += 'a,1,1,b,c,d,e,f,g,1\n'
     if 'B2c' in conditions:
@@ -130,7 +127,7 @@ var H = {0,1,2}
         ruletable += 'a,1,b,c,1,d,e,f,g,1\n'
     if 'B2n' in conditions:
         ruletable += 'a,b,1,c,d,e,f,1,g,1\n'
-
+    #B3 conditions:
     if 'B3a' in conditions:
         ruletable += 'a,1,1,1,b,c,d,e,f,1\n'
     if 'B3c' in conditions:
@@ -151,7 +148,7 @@ var H = {0,1,2}
         ruletable += 'a,1,1,b,c,1,d,e,f,1\n'
     if 'B3y' in conditions:
         ruletable += 'a,1,b,c,1,d,1,e,f,1\n'
-
+    #B4 conditions:
     if 'B4a' in conditions:
         ruletable += 'a,1,1,1,1,b,c,d,e,1\n'
     if 'B4c' in conditions:
@@ -178,7 +175,7 @@ var H = {0,1,2}
         ruletable += 'a,1,1,b,1,c,1,d,e,1\n'
     if 'B4z' in conditions:
         ruletable += 'a,1,1,b,c,1,1,d,e,1\n'
-
+    #B5 conditions:
     if 'B5a' in conditions:
         ruletable += 'a,b,1,1,1,1,1,c,d,1\n'
     if 'B5c' in conditions:
@@ -199,7 +196,7 @@ var H = {0,1,2}
         ruletable += 'a,b,c,1,1,d,1,1,1,1\n'
     if 'B5y' in conditions:
         ruletable += 'a,1,b,1,1,c,1,1,d,1\n'
-
+    #B6 conditions:
     if 'B6a' in conditions:
         ruletable += 'a,1,1,1,1,1,1,b,c,1\n'
     if 'B6c' in conditions:
@@ -212,12 +209,12 @@ var H = {0,1,2}
         ruletable += 'a,b,1,1,c,1,1,1,1,1\n'
     if 'B6n' in conditions:
         ruletable += 'a,1,1,1,b,1,1,1,c,1\n'
-
+    #B7 conditions:
     if 'B7c' in conditions:
         ruletable += 'a,1,b,1,1,1,1,1,1,1\n'
     if 'B7e' in conditions:
         ruletable += 'a,b,1,1,1,1,1,1,1,1\n'
-
+    #B8 condition(s):
     if 'B8' in conditions:
         ruletable += 'a,1,1,1,1,1,1,1,1,1\n'
 ##    #These are the conditions for detecting induction coils.
@@ -237,11 +234,13 @@ var H = {0,1,2}
 ##    if 'B3q' in conditions:
 ##        ruletable += 'a,b,1,c,d,1,1,e,1,2\n' #B4y
 ##    if 'B3j' in conditions:
+    #These are the conditions that combine adjacent objects:
+    #B1 conditions:
     if 'B1e' in conditions:
         ruletable += 'a,1,B,C,D,E,F,G,H,2\n'
     if 'B1c' in conditions:
         ruletable += 'a,B,1,C,D,E,F,G,H,2\n'
-
+    #B2 conditions:
     if 'B2a' in conditions:
         ruletable += 'a,1,1,B,C,D,E,F,G,2\n'
     if 'B2c' in conditions:
@@ -254,7 +253,7 @@ var H = {0,1,2}
         ruletable += 'a,1,B,C,1,D,E,F,G,2\n'
     if 'B2n' in conditions:
         ruletable += 'a,B,1,C,D,E,F,1,G,2\n'
-
+    #B3 conditions:
     if 'B3a' in conditions:
         ruletable += 'a,1,1,1,B,C,D,E,F,2\n'
     if 'B3c' in conditions:
@@ -275,7 +274,7 @@ var H = {0,1,2}
         ruletable += 'a,1,1,B,C,1,D,E,F,2\n'
     if 'B3y' in conditions:
         ruletable += 'a,1,B,C,1,D,1,E,F,2\n'
-
+    #B4 conditions:
     if 'B4a' in conditions:
         ruletable += 'a,1,1,1,1,B,C,D,E,2\n'
     if 'B4c' in conditions:
@@ -302,7 +301,7 @@ var H = {0,1,2}
         ruletable += 'a,1,1,B,1,C,1,D,E,2\n'
     if 'B4z' in conditions:
         ruletable += 'a,1,1,B,C,1,1,D,E,2\n'
-
+    #B5 conditions:
     if 'B5a' in conditions:
         ruletable += 'a,B,1,1,1,1,1,C,D,2\n'
     if 'B5c' in conditions:
@@ -323,7 +322,7 @@ var H = {0,1,2}
         ruletable += 'a,B,C,1,1,D,1,1,1,2\n'
     if 'B5y' in conditions:
         ruletable += 'a,1,B,1,1,C,1,1,D,2\n'
-
+    #B6 conditions:
     if 'B6a' in conditions:
         ruletable += 'a,1,1,1,1,1,1,B,C,2\n'
     if 'B6c' in conditions:
@@ -336,19 +335,14 @@ var H = {0,1,2}
         ruletable += 'a,B,1,1,C,1,1,1,1,2\n'
     if 'B6n' in conditions:
         ruletable += 'a,1,1,1,B,1,1,1,C,2\n'
-
+    #B7 conditions:
     if 'B7c' in conditions:
         ruletable += 'a,1,B,1,1,1,1,1,1,2\n'
     if 'B7e' in conditions:
         ruletable += 'a,B,1,1,1,1,1,1,1,2\n'
-
+    #B8 condition(s):
     if 'B8' in conditions:
-        ruletable += 'a,1,1,1,1,1,1,1,1,2\n'        
-
-
-
-
-    
+        ruletable += 'a,1,1,1,1,1,1,1,1,2\n'
     #Survival conditions:
     if 'S0' not in conditions:
         ruletable += '1,a,b,c,d,e,f,g,h,2\n'
@@ -461,27 +455,3 @@ var H = {0,1,2}
     if 'S8' not in conditions:
         ruletable += '1,1,1,1,1,1,1,1,1,2\n'   
     return ruletable
-
-def makerinser():
-    #Returns the ruletable to clean off the state 2 cells from a pattern.
-    table = '''@RULE isosjk_rinser
-
-Removes state-2 cells.
-
-@TABLE
-n_states:3
-neighborhood:Moore
-symmetries:rotate4reflect
-
-var a = {0,1}
-var b = {0,1}
-var c = {0,1}
-var d = {0,1}
-var e = {0,1}
-var f = {0,1}
-var g = {0,1}
-var h = {0,1}
-
-2,a,b,c,d,e,f,g,h,0
-'''
-    return table
